@@ -1,18 +1,24 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="q-pa-md">
+    <search-bar label="Pesquisar" hint="Digite o nome de um personagem" />
+    <character-item
+      label="Nome do personagem"
+      caption="Texto sobre o personagem"
+      imageURL="https://rickandmortyapi.com/api/character/avatar/183.jpeg"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import SearchBar from "@/components/SearchBar.vue";
+import CharacterItem from "@/components/CharacterItem.vue";
 
 export default defineComponent({
   name: "Home",
   components: {
-    HelloWorld,
+    SearchBar,
+    CharacterItem,
   },
 });
 </script>
