@@ -4,6 +4,9 @@ module.exports = {
       importStrategy: "kebab",
       rtlSupport: false,
     },
+    apollo: {
+      lintGQL: true
+    }
   },
   transpileDependencies: ["quasar"],
 };
