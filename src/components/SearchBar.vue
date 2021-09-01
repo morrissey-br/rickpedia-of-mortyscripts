@@ -1,5 +1,5 @@
 <template>
-  <q-input bottom-slots v-model="text" :label="label" :dense="dense">
+  <q-input bottom-slots v-model="text" :label="label">
     <template v-slot:append>
       <q-icon :name="text ? 'fa fa-times' : 'fa fa-search'" :class="text && 'cursor-pointer'" />
     </template>
