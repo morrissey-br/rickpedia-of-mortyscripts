@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <search-bar label="Pesquisar" hint="Digite o nome de um personagem" />
+    <search-bar label="Pesquisar" hint="Digite o nome de um personagem" :onSearch="handleSearch" />
     <div v-if="characters" ref="charactersDiv">
       <character-item
         v-for="character in characters"
@@ -18,8 +18,75 @@ import { defineComponent, onMounted, onUnmounted, ref } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
-import { useQuery, useResult } from "@vue/apollo-composable";
-import { Loading } from "quasar";
+import { useQuery, useQueryLoading, useResult } from "@vue/apollo-composable";
+
+const FETCH_CHARACTERS_TAG = gql`
+  query character($page: Int!, $nameFilter: String) {
+    characters(page: $page, filter: { name: $nameFilter }) {
+      info {
+        next
+      }
+      results {
+        id
+        name
+        origin {
+          name
+        }
+        image
+      }
+    }
+  }
+`;
+
+const fetchCharacters = () => {
+  const { result, fetchMore, refetch } = useQuery(
+    FETCH_CHARACTERS_TAG,
+    {
+      page: 1,
+      nameFilter: ''
+    },
+    { notifyOnNetworkStatusChange: true }
+  );
+
+  const characters = useResult(result, null, (data) => data.characters.results);
+  const isLoading = useQueryLoading()
+
+  const nextPage = useResult(
+    result,
+    null,
+    (data) => data.characters.info.next as number
+  );
+  const loadMore = () => {
+    if(!nextPage.value) return
+    fetchMore({
+      variables: {
+        page: nextPage.value,
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        const newResult = {
+          ...previousResult,
+          characters: {
+            ...previousResult.characters,
+            info: {
+              ...previousResult.characters.info,
+              next: fetchMoreResult.characters.info.next,
+            },
+            results: [
+              ...previousResult.characters.results,
+              ...fetchMoreResult.characters.results,
+            ],
+          },
+        };
+        return newResult;
+      },
+    });
+  };
+
+  const searchCharacter= (nameFilter: string) => {
+    refetch({page: 1, nameFilter: nameFilter})
+  }
+  return { characters, loadMore, searchCharacter, isLoading };
+};
 
 export default defineComponent({
   name: "Home",
@@ -28,55 +95,20 @@ export default defineComponent({
     CharacterItem,
   },
   setup() {
-    let page = 1;
-    const { result, fetchMore, loading } = useQuery(
-      gql`
-        query character($page: Int!) {
-          characters(page: $page) {
-            results {
-              id
-              name
-              origin {
-                name
-              }
-              image
-            }
-          }
-        }
-      `,
-      { page: page },
-      { notifyOnNetworkStatusChange: true }
-    );
-    const loadMore = () => {
-      page++;
-      fetchMore({
-        variables: {
-          page,
-        },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          const newResult = {
-            ...previousResult,
-            characters: {
-              ...previousResult.characters,
-              results: [
-                ...previousResult.characters.results,
-                ...fetchMoreResult.characters.results,
-              ],
-            },
-          };
-          return newResult;
-        },
-      });
-    };
+
+    const { characters, loadMore, searchCharacter, isLoading } = fetchCharacters();
+
+    const handleSearch = (text: string) => {
+      searchCharacter(text)
+    }
 
     const charactersDiv = ref<HTMLDivElement>();
-
     const handleScroll = (e: Event) => {
       let element = charactersDiv.value;
       if (!element) return;
 
       if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        if (loading.value) return;
+        if (isLoading.value) return;
         loadMore();
       }
     };
@@ -88,9 +120,7 @@ export default defineComponent({
     onUnmounted(() => {
       window.removeEventListener("scroll", handleScroll);
     });
-
-    const characters = useResult(result, [], (data) => data.characters.results);
-    return { characters, loadMore, charactersDiv };
+    return { characters, loadMore, searchCharacter, charactersDiv, handleSearch };
   },
 });
 </script>

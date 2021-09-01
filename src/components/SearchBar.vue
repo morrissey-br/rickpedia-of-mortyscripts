@@ -1,7 +1,10 @@
 <template>
   <q-input bottom-slots v-model="text" :label="label">
     <template v-slot:append>
-      <q-icon :name="text ? 'fa fa-times' : 'fa fa-search'" :class="text && 'cursor-pointer'" />
+      <q-icon
+        :name="text ? 'fa fa-times' : 'fa fa-search'"
+        :class="text && 'cursor-pointer'"
+      />
     </template>
     <template v-slot:hint>{{ hint }}</template>
   </q-input>
@@ -20,11 +23,20 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    onSearch: {
+      type: Function,
+      default: null,
+    },
   },
-  data: () => {
+  data() {
     return {
       text: "",
     };
+  },
+  watch: {
+    text(newText) {
+      this.onSearch(newText);
+    },
   },
 });
 </script>
