@@ -1,7 +1,11 @@
 <template>
   <div class="q-pa-md">
-    <search-bar label="Pesquisar" hint="Digite o nome de um personagem" :onSearch="handleSearch" />
-    <div v-if="characters" ref="charactersDiv">
+    <search-bar
+      label="Pesquisar"
+      hint="Digite o nome de um personagem"
+      :onSearch="handleSearch"
+    />
+    <q-infinite-scroll v-if="characters" @load="handleScroll" :offset="250">
       <character-item
         v-for="character in characters"
         :key="character.id"
@@ -9,18 +13,23 @@
         :caption="character.origin.name"
         :imageURL="character.image"
       />
-    </div>
+      <template v-slot:loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner-dots color="primary" size="40px" />
+        </div>
+      </template>
+    </q-infinite-scroll>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, ref } from "vue";
+import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useQueryLoading, useResult } from "@vue/apollo-composable";
 
-const FETCH_CHARACTERS_TAG = gql`
+const FETCH_CHARACTERS_QUERY = gql`
   query character($page: Int!, $nameFilter: String) {
     characters(page: $page, filter: { name: $nameFilter }) {
       info {
@@ -40,25 +49,27 @@ const FETCH_CHARACTERS_TAG = gql`
 
 const fetchCharacters = () => {
   const { result, fetchMore, refetch } = useQuery(
-    FETCH_CHARACTERS_TAG,
+    FETCH_CHARACTERS_QUERY,
     {
       page: 1,
-      nameFilter: ''
+      nameFilter: "",
     },
     { notifyOnNetworkStatusChange: true }
   );
 
   const characters = useResult(result, null, (data) => data.characters.results);
-  const isLoading = useQueryLoading()
+  const isLoading = useQueryLoading();
 
   const nextPage = useResult(
     result,
     null,
     (data) => data.characters.info.next as number
   );
-  const loadMore = () => {
-    if(!nextPage.value) return
-    fetchMore({
+
+  const loadMore = async () => {
+    console.log('foi')
+    if (!nextPage.value) return;
+    await fetchMore({
       variables: {
         page: nextPage.value,
       },
@@ -82,9 +93,9 @@ const fetchCharacters = () => {
     });
   };
 
-  const searchCharacter= (nameFilter: string) => {
-    refetch({page: 1, nameFilter: nameFilter})
-  }
+  const searchCharacter = (nameFilter: string) => {
+    refetch({ page: 1, nameFilter: nameFilter });
+  };
   return { characters, loadMore, searchCharacter, isLoading };
 };
 
@@ -95,32 +106,21 @@ export default defineComponent({
     CharacterItem,
   },
   setup() {
+    const { characters, loadMore, searchCharacter } = fetchCharacters();
 
-    const { characters, loadMore, searchCharacter, isLoading } = fetchCharacters();
-
-    const handleSearch = (text: string) => {
-      searchCharacter(text)
-    }
-
-    const charactersDiv = ref<HTMLDivElement>();
-    const handleScroll = (e: Event) => {
-      let element = charactersDiv.value;
-      if (!element) return;
-
-      if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        if (isLoading.value) return;
-        loadMore();
-      }
+    const handleScroll = (index: number, done: () => void) => {
+      loadMore().then(() => done())
     };
 
-    onMounted(() => {
-      window.addEventListener("scroll", handleScroll);
-    });
+    const handleSearch = (text: string) => {
+      searchCharacter(text);
+    };
 
-    onUnmounted(() => {
-      window.removeEventListener("scroll", handleScroll);
-    });
-    return { characters, loadMore, searchCharacter, charactersDiv, handleSearch };
+    return {
+      characters,
+      handleSearch,
+      handleScroll,
+    };
   },
 });
 </script>
