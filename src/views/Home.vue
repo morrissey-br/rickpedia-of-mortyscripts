@@ -67,8 +67,7 @@ const fetchCharacters = () => {
   );
 
   const loadMore = async () => {
-    console.log('foi')
-    if (!nextPage.value) return;
+    if (!nextPage.value) throw new Error('Any page left');
     await fetchMore({
       variables: {
         page: nextPage.value,
@@ -108,8 +107,8 @@ export default defineComponent({
   setup() {
     const { characters, loadMore, searchCharacter } = fetchCharacters();
 
-    const handleScroll = (index: number, done: () => void) => {
-      loadMore().then(() => done())
+    const handleScroll = (index: number, done: (stop: boolean) => void) => {
+      loadMore().then(() => done(false)).catch(() => done(true))
     };
 
     const handleSearch = (text: string) => {
