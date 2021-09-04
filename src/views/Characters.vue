@@ -76,7 +76,7 @@ const fetchCharacters = (page = 1, nameFilter = "") => {
 };
 
 export default defineComponent({
-  name: "Home",
+  name: "Characters",
   components: {
     SearchBar,
     CharacterItem,
