@@ -24,6 +24,18 @@ const cache = new InMemoryCache({
             }
             return merged
           }
+        },
+        episodes : {
+          keyArgs: ['filter'],
+          merge(before = [], after) {
+            const merged = {
+              ...after,
+              results: [
+                ...before.results,
+                ...after.results
+              ]
+            }
+          }
         }
       }
     }

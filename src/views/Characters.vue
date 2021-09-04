@@ -32,9 +32,6 @@ import { useQuery, useResult } from "@vue/apollo-composable";
 const FETCH_CHARACTERS_QUERY = gql`
   query characters($page: Int!, $nameFilter: String) {
     characters(page: $page, filter: { name: $nameFilter }) {
-      info {
-        next
-      }
       results {
         id
         name

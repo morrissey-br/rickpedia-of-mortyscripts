@@ -31,9 +31,6 @@ import { useQuery, useQueryLoading, useResult } from "@vue/apollo-composable";
 const FETCH_EPISODES_QUERY = gql`
   query episodes($page: Int!, $nameFilter: String) {
     episodes(page: $page, filter: { name: $nameFilter }) {
-      info {
-        next
-      }
       results {
         id
         name
@@ -43,48 +40,20 @@ const FETCH_EPISODES_QUERY = gql`
   }
 `;
 
-const fetchepisodes = () => {
+const fetchepisodes = (page = 1, nameFilter = "") => {
   const { result, fetchMore, refetch } = useQuery(
     FETCH_EPISODES_QUERY,
     {
-      page: 1,
-      nameFilter: "",
+      page,
+      nameFilter,
     },
     { notifyOnNetworkStatusChange: true }
   );
 
-  const episodes = useResult(result, null, (data) => data.episodes.results);
-  const isLoading = useQueryLoading();
-
-  const nextPage = useResult(
-    result,
-    null,
-    (data) => data.episodes.info.next as number
-  );
-
-  const loadMore = async () => {
-    console.log('foi')
-    if (!nextPage.value) return;
+  const loadMore = async (nextPage: number) => {
     await fetchMore({
       variables: {
-        page: nextPage.value,
-      },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        const newResult = {
-          ...previousResult,
-          episodes: {
-            ...previousResult.episodes,
-            info: {
-              ...previousResult.episodes.info,
-              next: fetchMoreResult.episodes.info.next,
-            },
-            results: [
-              ...previousResult.episodes.results,
-              ...fetchMoreResult.episodes.results,
-            ],
-          },
-        };
-        return newResult;
+        page: nextPage,
       },
     });
   };
@@ -92,7 +61,10 @@ const fetchepisodes = () => {
   const searchEpisode = (nameFilter: string) => {
     refetch({ page: 1, nameFilter: nameFilter });
   };
-  return { episodes, loadMore, searchEpisode, isLoading };
+
+  const episodes = useResult(result, null, (data) => data.episodes.results);
+
+  return { episodes, loadMore, searchEpisode };
 };
 
 export default defineComponent({
@@ -104,8 +76,10 @@ export default defineComponent({
   setup() {
     const { episodes, loadMore, searchEpisode } = fetchepisodes();
 
-    const handleScroll = (index: number, done: () => void) => {
-      loadMore().then(() => done())
+    const handleScroll = (index: number, done: (stop: boolean) => void) => {
+      loadMore(index + 1)
+        .then(() => done(false))
+        .catch(() => done(true));
     };
 
     const handleSearch = (text: string) => {
