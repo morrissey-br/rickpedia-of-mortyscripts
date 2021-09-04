@@ -14,7 +14,7 @@ const cache = new InMemoryCache({
       fields: {
         characters: {
           keyArgs: ['filter'],
-          merge(before = {results: []}, after) {
+          merge(before = { results: [] }, after) {
             const merged = {
               ...after,
               results: [
@@ -25,9 +25,9 @@ const cache = new InMemoryCache({
             return merged
           }
         },
-        episodes : {
+        episodes: {
           keyArgs: ['filter'],
-          merge(before = [], after) {
+          merge(before = { results: [] }, after) {
             const merged = {
               ...after,
               results: [
@@ -35,6 +35,7 @@ const cache = new InMemoryCache({
                 ...after.results
               ]
             }
+            return merged
           }
         }
       }

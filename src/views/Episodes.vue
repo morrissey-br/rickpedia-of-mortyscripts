@@ -26,7 +26,7 @@ import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
-import { useQuery, useQueryLoading, useResult } from "@vue/apollo-composable";
+import { useQuery, useResult } from "@vue/apollo-composable";
 
 const FETCH_EPISODES_QUERY = gql`
   query episodes($page: Int!, $nameFilter: String) {
@@ -40,7 +40,7 @@ const FETCH_EPISODES_QUERY = gql`
   }
 `;
 
-const fetchepisodes = (page = 1, nameFilter = "") => {
+const fetchEpisodes = (page = 1, nameFilter = "") => {
   const { result, fetchMore, refetch } = useQuery(
     FETCH_EPISODES_QUERY,
     {
@@ -68,13 +68,13 @@ const fetchepisodes = (page = 1, nameFilter = "") => {
 };
 
 export default defineComponent({
-  name: "Home",
+  name: "Episodes",
   components: {
     SearchBar,
     CharacterItem,
   },
   setup() {
-    const { episodes, loadMore, searchEpisode } = fetchepisodes();
+    const { episodes, loadMore, searchEpisode } = fetchEpisodes();
 
     const handleScroll = (index: number, done: (stop: boolean) => void) => {
       loadMore(index + 1)

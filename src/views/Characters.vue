@@ -55,7 +55,6 @@ const fetchCharacters = (page = 1, nameFilter = "") => {
   );
 
   const loadMore = async (nextPage: number) => {
-    console.log(nextPage)
     await fetchMore({
       variables: {
         page: nextPage,
