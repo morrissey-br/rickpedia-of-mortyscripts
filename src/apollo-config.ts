@@ -37,6 +37,19 @@ const cache = new InMemoryCache({
             }
             return merged
           }
+        },
+        locations: {
+          keyArgs: ['filter'],
+          merge(before = {results: []}, after) {
+            const merged = {
+              ...after,
+              results: [
+                ...before.results,
+                ...after.results
+              ]
+            }
+            return merged
+          }
         }
       }
     }
