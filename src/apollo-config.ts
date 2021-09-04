@@ -6,8 +6,29 @@ const httpLink = createHttpLink({
   uri: 'https://rickandmortyapi.com/graphql',
 })
 
-// Cache implementation
-const cache = new InMemoryCache()
+// // Cache implementation
+// const cache = new InMemoryCache()
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        characters: {
+          keyArgs: ['filter'],
+          merge(before = {results: []}, after) {
+            const merged = {
+              ...after,
+              results: [
+                ...before.results,
+                ...after.results
+              ]
+            }
+            return merged
+          }
+        }
+      }
+    }
+  }
+})
 
 // Create the apollo client
 export const apolloClient = new ApolloClient({

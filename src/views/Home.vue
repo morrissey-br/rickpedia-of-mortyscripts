@@ -27,10 +27,10 @@ import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
-import { useQuery, useQueryLoading, useResult } from "@vue/apollo-composable";
+import { useQuery, useResult } from "@vue/apollo-composable";
 
 const FETCH_CHARACTERS_QUERY = gql`
-  query character($page: Int!, $nameFilter: String) {
+  query characters($page: Int!, $nameFilter: String) {
     characters(page: $page, filter: { name: $nameFilter }) {
       info {
         next
@@ -47,47 +47,21 @@ const FETCH_CHARACTERS_QUERY = gql`
   }
 `;
 
-const fetchCharacters = () => {
+const fetchCharacters = (page = 1, nameFilter = "") => {
   const { result, fetchMore, refetch } = useQuery(
     FETCH_CHARACTERS_QUERY,
     {
-      page: 1,
-      nameFilter: "",
+      page,
+      nameFilter,
     },
     { notifyOnNetworkStatusChange: true }
   );
 
-  const characters = useResult(result, null, (data) => data.characters.results);
-  const isLoading = useQueryLoading();
-
-  const nextPage = useResult(
-    result,
-    null,
-    (data) => data.characters.info.next as number
-  );
-
-  const loadMore = async () => {
-    if (!nextPage.value) throw new Error('Any page left');
+  const loadMore = async (nextPage: number) => {
+    console.log(nextPage)
     await fetchMore({
       variables: {
-        page: nextPage.value,
-      },
-      updateQuery: (previousResult, { fetchMoreResult }) => {
-        const newResult = {
-          ...previousResult,
-          characters: {
-            ...previousResult.characters,
-            info: {
-              ...previousResult.characters.info,
-              next: fetchMoreResult.characters.info.next,
-            },
-            results: [
-              ...previousResult.characters.results,
-              ...fetchMoreResult.characters.results,
-            ],
-          },
-        };
-        return newResult;
+        page: nextPage,
       },
     });
   };
@@ -95,7 +69,10 @@ const fetchCharacters = () => {
   const searchCharacter = (nameFilter: string) => {
     refetch({ page: 1, nameFilter: nameFilter });
   };
-  return { characters, loadMore, searchCharacter, isLoading };
+
+  const characters = useResult(result, null, (data) => data.characters.results);
+
+  return { characters, loadMore, searchCharacter };
 };
 
 export default defineComponent({
@@ -108,7 +85,9 @@ export default defineComponent({
     const { characters, loadMore, searchCharacter } = fetchCharacters();
 
     const handleScroll = (index: number, done: (stop: boolean) => void) => {
-      loadMore().then(() => done(false)).catch(() => done(true))
+      loadMore(index + 1)
+        .then(() => done(false))
+        .catch(() => done(true));
     };
 
     const handleSearch = (text: string) => {
