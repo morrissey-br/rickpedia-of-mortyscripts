@@ -6,7 +6,7 @@ import store from "./store";
 import { Quasar } from "quasar";
 import quasarUserOptions from "./quasar-user-options";
 import { DefaultApolloClient } from '@vue/apollo-composable'
-import { apolloClient } from "./apollo-config";
+import { apolloClient } from "./apollo/apollo-config";
 
 createApp({
   setup() {
