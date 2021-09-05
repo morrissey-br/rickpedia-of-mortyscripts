@@ -10,6 +10,11 @@ const routes: Array<RouteRecordRaw> = [
     component: Characters,
   },
   {
+    path: '/characters/:id',
+    name: 'Character',
+    component: () => import('@/views/CharacterPage.vue')
+  },
+  {
     path: '/episodes',
     name: 'Episodes',
     component: Episodes

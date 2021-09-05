@@ -12,6 +12,7 @@
         :label="character.name"
         :caption="character.origin.name"
         :imageURL="character.image"
+        @click="handleCharacterClick(character.id)"
       />
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
@@ -96,5 +97,11 @@ export default defineComponent({
       handleScroll,
     };
   },
+
+  methods: {
+    handleCharacterClick(id: string) {
+      this.$router.push({name: 'Character', params: {id: id}})
+    }
+  }
 });
 </script>
