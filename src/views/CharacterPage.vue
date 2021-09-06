@@ -27,6 +27,7 @@ import { defineComponent } from "vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import DeadOrAlive from "@/components/DeadOrAlive.vue";
+import { useRoute } from "vue-router";
 
 const FETCH_CHARACTER_QUERY = gql`
   query character($characterID: ID!) {
@@ -73,7 +74,8 @@ export default defineComponent({
     DeadOrAlive,
   },
   setup() {
-    const { character } = fetchCharacter("1");
+    const route = useRoute()
+    const { character } = fetchCharacter(route.params.id as string);
 
     return { character };
   },
