@@ -27,7 +27,10 @@ export default defineComponent({
       switch (this.text) {
         case 'Alive':
           return 'fa fa-heart'
-          
+        case 'Dead':
+          return 'fa fa-dizzy'
+        default:
+          return 'fa fa-question'
       }
     }
   }
