@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <q-page padding>
     <search-bar
       label="Pesquisar"
       hint="Digite o nome de um episódio"
@@ -18,7 +18,7 @@
         </div>
       </template>
     </q-infinite-scroll>
-  </div>
+  </q-page>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <q-page padding v-if="character">
     <div class="row items-center q-pa-md">
       <div class="col-auto q-mr-md">
         <q-avatar size="100px">
@@ -8,19 +8,15 @@
       </div>
       <div class="col">
         <div class="text-h4">{{ character.name }}</div>
-        <div class="text-subtitle1">{{character.species}} - {{character.origin.name}}</div>
+        <div class="text-subtitle1">
+          {{ character.species }} - {{ character.origin.name }}
+        </div>
       </div>
     </div>
     <div class="text-h5">Status</div>
-    <div>{{character.status}}</div>
-    <div>Location: {{character.location.name}}</div>
-    <q-separator></q-separator>
-    <!-- <div class="text-h5">Episodes</div>
-    <div v-for="episode in character.episode" :key="episode.id">
-      <div>{{episode.name}}</div>
-      <div>{{episode.episode}}</div>
-    </div> -->
-  </div>
+    <div>{{ character.status }}</div>
+    <div>Location: {{ character.location.name }}</div>
+  </q-page>
 </template>
 
 <script lang="ts">
@@ -63,7 +59,7 @@ const fetchCharacter = (characterID: string) => {
     { notifyOnNetworkStatusChange: true }
   );
 
-  const character = useResult(result, {}, (data) => data.character);
+  const character = useResult(result, null, (data) => data.character);
 
   return { character };
 };

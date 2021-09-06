@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <q-page padding>
     <search-bar
       label="Pesquisar"
       hint="Digite o nome de um personagem"
@@ -20,7 +20,7 @@
         </div>
       </template>
     </q-infinite-scroll>
-  </div>
+  </q-page>
 </template>
 
 <script lang="ts">
@@ -100,8 +100,8 @@ export default defineComponent({
 
   methods: {
     handleCharacterClick(id: string) {
-      this.$router.push({name: 'Character', params: {id: id}})
-    }
-  }
+      this.$router.push({ name: "Character", params: { id: id } });
+    },
+  },
 });
 </script>
