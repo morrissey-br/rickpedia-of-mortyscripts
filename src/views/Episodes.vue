@@ -11,6 +11,7 @@
         :key="episode.id"
         :label="episode.name"
         :caption="episode.episode"
+        @click="() => router.push({name: 'Episode', params: {id: episode.id}})"
       />
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
@@ -27,6 +28,7 @@ import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
+import { useRouter } from "vue-router";
 
 const FETCH_EPISODES_QUERY = gql`
   query episodes($page: Int!, $nameFilter: String) {
@@ -63,7 +65,6 @@ const fetchEpisodes = (page = 1, nameFilter = "") => {
   };
 
   const episodes = useResult(result, null, (data) => data.episodes.results);
-
   return { episodes, loadMore, searchEpisode };
 };
 
@@ -86,10 +87,12 @@ export default defineComponent({
       searchEpisode(text);
     };
 
+    const router = useRouter()
     return {
       episodes,
       handleSearch,
       handleScroll,
+      router
     };
   },
 });

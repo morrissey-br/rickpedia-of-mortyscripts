@@ -11,6 +11,7 @@
         :key="location.id"
         :label="location.name"
         :caption="`${location.type} (${location.dimension})`"
+        @click="() => router.push({name: 'Location', params: {id: location.id}})"
       />
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
@@ -27,6 +28,7 @@ import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
+import { useRouter } from "vue-router";
 
 const FETCH_EPISODES_QUERY = gql`
   query locations($page: Int!, $nameFilter: String) {
@@ -87,10 +89,13 @@ export default defineComponent({
       searchLocation(text);
     };
 
+    const router = useRouter()
+
     return {
       locations,
       handleSearch,
       handleScroll,
+      router
     };
   },
 });

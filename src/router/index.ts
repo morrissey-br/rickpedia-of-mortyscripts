@@ -4,6 +4,7 @@ import Episodes from "../views/Episodes.vue";
 import Locations from "../views/Locations.vue";
 import CharacterPage from '@/views/CharacterPage.vue'
 import EpisodePage from '@/views/EpisodePage.vue'
+import LocationPage from '@/views/LocationPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/locations',
     name: 'Locations',
     component: Locations
+  },
+  {
+    path: '/locations/:id',
+    name: 'Location',
+    component: LocationPage
   }
   // {
   //   path: "/about",

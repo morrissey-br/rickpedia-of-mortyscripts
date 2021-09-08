@@ -24,7 +24,7 @@
 import { useQuery, useResult } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const FETCH_EPISODE_QUERY = gql`
   query episode($id: ID!) {
@@ -54,8 +54,9 @@ const fetchEpisode = (id: string) => {
 
 export default defineComponent({
   setup() {
-    const { episode } = fetchEpisode("1");
     const router = useRouter()
+    const route = useRoute()
+    const { episode } = fetchEpisode(route.params.id as string);
     return { episode, router };
   },
 });
