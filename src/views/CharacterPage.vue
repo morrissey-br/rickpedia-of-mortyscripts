@@ -19,6 +19,13 @@
     <div class="text-subtitle1">Location: {{ character.location.name }}</div>
     <q-separator class="q-my-md"></q-separator>
     <div class="text-h5">Episodes:</div>
+    <episode-item
+      v-for="episode in character.episode"
+      :key="episode.id"
+      :id="episode.id"
+      :label="episode.name"
+      :caption="episode.episode"
+    />
   </q-page>
 </template>
 
@@ -27,6 +34,7 @@ import { defineComponent } from "vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import DeadOrAlive from "@/components/DeadOrAlive.vue";
+import EpisodeItem from "@/components/EpisodeItem.vue";
 import { useRoute } from "vue-router";
 
 const FETCH_CHARACTER_QUERY = gql`
@@ -72,9 +80,10 @@ const fetchCharacter = (characterID: string) => {
 export default defineComponent({
   components: {
     DeadOrAlive,
+    EpisodeItem,
   },
   setup() {
-    const route = useRoute()
+    const route = useRoute();
     const { character } = fetchCharacter(route.params.id as string);
 
     return { character };

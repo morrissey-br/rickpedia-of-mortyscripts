@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-my-md cursor-pointer">
+  <q-card class="q-my-md cursor-pointer" @click="handleClick">
     <q-item>
       <q-item-section avatar>
         <q-avatar color="red" size="80px">
@@ -20,6 +20,10 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     label: {
       type: String,
       required: true,
@@ -31,6 +35,11 @@ export default defineComponent({
     imageURL: {
       type: String,
       default: "",
+    },
+  },
+  methods: {
+    handleClick() {
+      this.$router.push({ name: "Character", params: { id: this.$props.id } });
     },
   },
 });

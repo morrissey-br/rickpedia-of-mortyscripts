@@ -1,5 +1,5 @@
 <template>
-  <q-item class="cursor-pointer" clickable @click="$emit('click', e)">
+  <q-item class="cursor-pointer" clickable @click="handleClick">
     <q-item-section>
       <q-item-label>{{ label }}</q-item-label>
       <q-item-label caption lines="1">{{ caption }}</q-item-label>
@@ -15,8 +15,11 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  emits: ['click'],
   props: {
+    id: {
+      type: String,
+      required: true
+    },
     label: {
       type: String,
       required: true,
@@ -26,5 +29,10 @@ export default defineComponent({
       default: "",
     },
   },
+  methods: {
+    handleClick() {
+      this.$router.push({name: 'Episode', params: {id: this.$props.id}})
+    }
+  }
 });
 </script>

@@ -9,10 +9,10 @@
       <character-item
         v-for="character in characters"
         :key="character.id"
+        :id="character.id"
         :label="character.name"
         :caption="character.origin.name"
         :imageURL="character.image"
-        @click="handleCharacterClick(character.id)"
       />
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
@@ -29,7 +29,6 @@ import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
-import { useRouter } from "vue-router";
 
 const FETCH_CHARACTERS_QUERY = gql`
   query characters($page: Int!, $nameFilter: String) {
@@ -92,16 +91,10 @@ export default defineComponent({
       searchCharacter(text);
     };
 
-    const router = useRouter();
-    const handleCharacterClick = (id: string) => {
-      router.push({ name: "Character", params: { id: id } });
-    };
-
     return {
       characters,
       handleSearch,
       handleScroll,
-      handleCharacterClick,
     };
   },
 });

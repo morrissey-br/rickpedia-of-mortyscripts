@@ -9,9 +9,9 @@
       <episode-item
         v-for="episode in episodes"
         :key="episode.id"
+        :id="episode.id"
         :label="episode.name"
         :caption="episode.episode"
-        @click="handleEpisodeClick(episode.id)"
       ></episode-item>
 
       <template v-slot:loading>
@@ -29,7 +29,6 @@ import SearchBar from "@/components/SearchBar.vue";
 import EpisodeItem from "@/components/EpisodeItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
-import { useRoute, useRouter } from "vue-router";
 
 const FETCH_EPISODES_QUERY = gql`
   query episodes($page: Int!, $nameFilter: String) {
@@ -88,16 +87,10 @@ export default defineComponent({
       searchEpisode(text);
     };
 
-    const router = useRouter();
-    const handleEpisodeClick = (id: string) => {
-      router.push({ name: "Episode", params: { id: id } })
-    }
-
     return {
       episodes,
       handleSearch,
       handleScroll,
-      handleEpisodeClick
     };
   },
 });
