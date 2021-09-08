@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-my-md">
+  <q-card class="q-my-md cursor-pointer">
     <q-item>
       <q-item-section avatar>
         <q-avatar color="red" size="80px">
@@ -35,9 +35,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-div {
-  cursor: pointer;
-}
-</style>

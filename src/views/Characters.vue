@@ -29,6 +29,7 @@ import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
+import { useRouter } from "vue-router";
 
 const FETCH_CHARACTERS_QUERY = gql`
   query characters($page: Int!, $nameFilter: String) {
@@ -91,17 +92,17 @@ export default defineComponent({
       searchCharacter(text);
     };
 
+    const router = useRouter();
+    const handleCharacterClick = (id: string) => {
+      router.push({ name: "Character", params: { id: id } });
+    };
+
     return {
       characters,
       handleSearch,
       handleScroll,
+      handleCharacterClick,
     };
-  },
-
-  methods: {
-    handleCharacterClick(id: string) {
-      this.$router.push({ name: "Character", params: { id: id } });
-    },
   },
 });
 </script>

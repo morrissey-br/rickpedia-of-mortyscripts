@@ -6,13 +6,14 @@
       :onSearch="handleSearch"
     />
     <q-infinite-scroll v-if="episodes" @load="handleScroll" :offset="250">
-      <character-item
+      <episode-item
         v-for="episode in episodes"
         :key="episode.id"
         :label="episode.name"
         :caption="episode.episode"
-        @click="() => router.push({name: 'Episode', params: {id: episode.id}})"
-      />
+        @click="handleEpisodeClick(episode.id)"
+      ></episode-item>
+
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
           <q-spinner-dots color="primary" size="40px" />
@@ -25,10 +26,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
-import CharacterItem from "@/components/CharacterItem.vue";
+import EpisodeItem from "@/components/EpisodeItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const FETCH_EPISODES_QUERY = gql`
   query episodes($page: Int!, $nameFilter: String) {
@@ -72,7 +73,7 @@ export default defineComponent({
   name: "Episodes",
   components: {
     SearchBar,
-    CharacterItem,
+    EpisodeItem,
   },
   setup() {
     const { episodes, loadMore, searchEpisode } = fetchEpisodes();
@@ -87,12 +88,16 @@ export default defineComponent({
       searchEpisode(text);
     };
 
-    const router = useRouter()
+    const router = useRouter();
+    const handleEpisodeClick = (id: string) => {
+      router.push({ name: "Episode", params: { id: id } })
+    }
+
     return {
       episodes,
       handleSearch,
       handleScroll,
-      router
+      handleEpisodeClick
     };
   },
 });

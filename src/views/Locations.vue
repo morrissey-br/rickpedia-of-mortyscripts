@@ -6,12 +6,12 @@
       :onSearch="handleSearch"
     />
     <q-infinite-scroll v-if="locations" @load="handleScroll" :offset="250">
-      <character-item
+      <location-item
         v-for="location in locations"
         :key="location.id"
         :label="location.name"
         :caption="`${location.type} (${location.dimension})`"
-        @click="() => router.push({name: 'Location', params: {id: location.id}})"
+        @click="handleLocationClick(location.id)"
       />
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
-import CharacterItem from "@/components/CharacterItem.vue";
+import LocationItem from '@/components/LocationItem.vue'
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import { useRouter } from "vue-router";
@@ -74,7 +74,7 @@ export default defineComponent({
   name: "Locations",
   components: {
     SearchBar,
-    CharacterItem,
+    LocationItem,
   },
   setup() {
     const { locations, loadMore, searchLocation } = fetchLocations();
@@ -90,12 +90,15 @@ export default defineComponent({
     };
 
     const router = useRouter()
+    const handleLocationClick = (id: string) => {
+      router.push({name: 'Location', params: {id: id}})
+    }
 
     return {
       locations,
       handleSearch,
       handleScroll,
-      router
+      handleLocationClick
     };
   },
 });
