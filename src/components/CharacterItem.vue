@@ -1,6 +1,6 @@
 <template>
   <q-card class="q-my-md cursor-pointer" @click="handleClick">
-    <q-item>
+    <q-item clickable>
       <q-item-section avatar>
         <q-avatar size="80px">
           <q-img :src="imageURL" spinner-color="secondary" />
