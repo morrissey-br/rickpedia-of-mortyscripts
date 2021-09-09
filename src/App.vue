@@ -9,7 +9,7 @@
           Rickpedita of Mortyscripts
         </q-toolbar-title>
       </q-toolbar>
-      <q-tabs>
+      <q-tabs indicator-color="secondary" active-color="secondary">
         <q-route-tab to="/" exact label="Characters" />
         <q-route-tab to="/episodes" label="Episodes" />
         <q-route-tab to="/locations" label="Locations" />

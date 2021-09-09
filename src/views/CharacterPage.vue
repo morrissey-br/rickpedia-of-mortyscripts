@@ -12,11 +12,9 @@
           <div class="text-subtitle1">
             {{ character.species }} - {{ character.origin.name }}
           </div>
+          <dead-or-alive :text="character.status"></dead-or-alive>
         </div>
-      </div>
-      <q-separator spaced=""></q-separator>
-      <span class="text-h5 vertical-middle q-mr-xs">Status:</span>
-      <dead-or-alive :text="character.status"></dead-or-alive>
+      </div>      
       <q-separator spaced=""></q-separator>
       <span class="text-h5 vertical-middle q-mb-md">Location:</span>
       <location-item

@@ -1,5 +1,5 @@
 <template>
-  <q-chip :color="color" :icon='icon' text-color="white">{{ text }}</q-chip>
+  <q-chip :color="color" :icon='icon' text-color="white" class="q-ma-none">{{ text }}</q-chip>
 </template>
 
 <script lang="ts">
