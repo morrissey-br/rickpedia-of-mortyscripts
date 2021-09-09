@@ -1,15 +1,15 @@
 <template>
   <q-item class="cursor-pointer" clickable @click="handleClick">
     <q-item-section>
-      <q-item-label>{{ label }}</q-item-label>
-      <q-item-label caption lines="1">{{ caption }}</q-item-label>
+      <q-item-label>{{ name }}</q-item-label>
+      <q-item-label caption lines="1">{{type}} {{dimension}}</q-item-label>
     </q-item-section>
 
     <q-item-section side top>
       <q-icon name="fa fa-angle-right" />
     </q-item-section>
   </q-item>
-  <q-separator spaced inset />
+  <q-separator spaced inset v-if="separator"/>
 </template>
 
 <script lang="ts">
@@ -21,14 +21,22 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    label: {
+    name: {
       type: String,
       required: true,
     },
-    caption: {
+    type: {
       type: String,
-      default: "",
+      required: true,
     },
+    dimension: {
+      type: String,
+      required: true,
+    },
+    separator: {
+      type: Boolean,
+      default: true
+    }
   },
   methods: {
     handleClick() {

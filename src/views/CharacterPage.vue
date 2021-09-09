@@ -16,7 +16,15 @@
     <q-separator class="q-my-md"></q-separator>
     <span class="text-h5 vertical-middle q-mr-xs">Status:</span>
     <dead-or-alive :text="character.status"></dead-or-alive>
-    <div class="text-subtitle1">Location: {{ character.location.name }}</div>
+    <q-separator class="q-my-md"></q-separator>
+    <span class="text-h5 vertical-middle q-mr-xs">Location:</span>
+    <location-item
+      :id="character.location.id"
+      :name="character.location.name"
+      :type="character.location.type"
+      :dimension="character.location.dimension"
+      :separator="false"
+    />
     <q-separator class="q-my-md"></q-separator>
     <div class="text-h5">Episodes:</div>
     <episode-item
@@ -35,6 +43,7 @@ import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 import DeadOrAlive from "@/components/DeadOrAlive.vue";
 import EpisodeItem from "@/components/EpisodeItem.vue";
+import LocationItem from "@/components/LocationItem.vue";
 import { useRoute } from "vue-router";
 
 const FETCH_CHARACTER_QUERY = gql`
@@ -53,6 +62,8 @@ const FETCH_CHARACTER_QUERY = gql`
       location {
         id
         name
+        type
+        dimension
       }
       image
       episode {
@@ -81,6 +92,7 @@ export default defineComponent({
   components: {
     DeadOrAlive,
     EpisodeItem,
+    LocationItem,
   },
   setup() {
     const route = useRoute();

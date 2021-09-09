@@ -10,8 +10,9 @@
         v-for="location in locations"
         :key="location.id"
         :id="location.id"
-        :label="location.name"
-        :caption="`${location.type} (${location.dimension})`"
+        :name="location.name"
+        :type="location.type"
+        :dimension="location.dimension"
       />
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
