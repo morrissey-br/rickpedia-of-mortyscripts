@@ -2,9 +2,8 @@
   <q-card class="q-my-md cursor-pointer" @click="handleClick">
     <q-item>
       <q-item-section avatar>
-        <q-avatar color="red" size="80px">
-          <img v-if="imageURL" :src="imageURL" alt="" />
-          {{ !imageURL && label[0] }}
+        <q-avatar size="80px">
+          <q-img :src="imageURL" spinner-color="secondary" />
         </q-avatar>
       </q-item-section>
       <q-item-section>

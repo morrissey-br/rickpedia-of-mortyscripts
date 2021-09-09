@@ -8,5 +8,5 @@
       <q-icon name="fa fa-angle-right" />
     </q-item-section>
   </q-item>
-  <q-separator spaced inset v-if="separator" />
+  <q-separator spaced inset/>
 </template>

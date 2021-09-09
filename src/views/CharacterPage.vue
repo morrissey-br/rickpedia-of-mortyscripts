@@ -3,7 +3,7 @@
     <div class="row items-center q-mb-md">
       <div class="col-auto q-mr-md">
         <q-avatar size="100px">
-          <img :src="character.image" alt="" />
+          <q-img :src="character.image" spinner-color="secondary" />
         </q-avatar>
       </div>
       <div class="col">

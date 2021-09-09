@@ -13,7 +13,7 @@
       @click="() => router.push({name: 'Character', params: {id: character.id}})"
     >
       <q-avatar>
-        <q-img :src="character.image" spinner-color="white" />
+        <q-img :src="character.image" spinner-color="secondary" />
       </q-avatar>
       <q-tooltip :offset="[0, 5]">{{character.name}}</q-tooltip>
     </q-btn>

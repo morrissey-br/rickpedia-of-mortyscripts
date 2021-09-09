@@ -16,7 +16,7 @@
       "
     >
       <q-avatar>
-        <q-img :src="resident.image" spinner-color="white" />
+        <q-img :src="resident.image" spinner-color="secondary" />
       </q-avatar>
       <q-tooltip :offset="[0, 5]">{{ resident.name }}</q-tooltip>
     </q-btn>
