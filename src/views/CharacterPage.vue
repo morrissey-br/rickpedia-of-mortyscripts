@@ -1,6 +1,6 @@
 <template>
   <q-page padding v-if="character">
-    <div class="row items-center">
+    <div class="row items-center q-mb-md">
       <div class="col-auto q-mr-md">
         <q-avatar size="100px">
           <img :src="character.image" alt="" />
@@ -13,11 +13,11 @@
         </div>
       </div>
     </div>
-    <q-separator class="q-my-md"></q-separator>
+    <q-separator spaced=""></q-separator>
     <span class="text-h5 vertical-middle q-mr-xs">Status:</span>
     <dead-or-alive :text="character.status"></dead-or-alive>
-    <q-separator class="q-my-md"></q-separator>
-    <span class="text-h5 vertical-middle q-mr-xs">Location:</span>
+    <q-separator spaced=""></q-separator>
+    <span class="text-h5 vertical-middle q-mb-md">Location:</span>
     <location-item
       :id="character.location.id"
       :name="character.location.name"
@@ -25,8 +25,8 @@
       :dimension="character.location.dimension"
       :separator="false"
     />
-    <q-separator class="q-my-md"></q-separator>
-    <div class="text-h5">Episodes:</div>
+    <q-separator spaced></q-separator>
+    <span class="text-h5 q-mb-md">Episodes:</span>
     <episode-item
       v-for="episode in character.episode"
       :key="episode.id"

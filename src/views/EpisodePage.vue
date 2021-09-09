@@ -3,8 +3,8 @@
     <div class="text-h4">{{ episode.name }}</div>
     <div class="text-subtitle1">{{ episode.episode }}</div>
     <div>Lauch date: {{ episode.air_date }}</div>
-    <q-separator class="q-my-md"></q-separator>
-    <div class="text-h5">Characters:</div>
+    <q-separator spaced></q-separator>
+    <div class="text-h5 q-mb-md">Characters:</div>
     <q-btn
       round
       v-for="character in episode.characters"

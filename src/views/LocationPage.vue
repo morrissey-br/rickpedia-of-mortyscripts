@@ -4,8 +4,8 @@
     <div class="text-subtitle1">
       {{ location.type }} - {{ location.dimension }}
     </div>
-    <q-separator class="q-my-md"></q-separator>
-    <div class="text-h5">Residents:</div>
+    <q-separator spaced></q-separator>
+    <div class="text-h5 q-mb-md">Residents:</div>
     <q-btn
       round
       v-for="resident in location.residents"
