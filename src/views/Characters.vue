@@ -5,6 +5,11 @@
       hint="Digite o nome de um personagem"
       :onSearch="handleSearch"
     />
+    <div class="mask" v-if="!characters">
+      <character-item-skeleton  />
+      <character-item-skeleton  />
+      <character-item-skeleton  />
+    </div>
     <q-infinite-scroll v-if="characters" @load="handleScroll" :offset="250">
       <character-item
         v-for="character in characters"
@@ -14,6 +19,7 @@
         :caption="character.origin.name"
         :imageURL="character.image"
       />
+
       <template v-slot:loading>
         <div class="row justify-center q-my-md">
           <q-spinner-dots color="primary" size="40px" />
@@ -27,6 +33,7 @@
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import CharacterItem from "@/components/CharacterItem.vue";
+import CharacterItemSkeleton from "@/components/CharacterItemSkeleton.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 
@@ -77,6 +84,7 @@ export default defineComponent({
   components: {
     SearchBar,
     CharacterItem,
+    CharacterItemSkeleton,
   },
   setup() {
     const { characters, loadMore, searchCharacter } = fetchCharacters();
@@ -99,3 +107,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.mask {
+  mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent)
+}
+</style>
