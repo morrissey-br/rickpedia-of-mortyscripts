@@ -5,7 +5,12 @@
       hint="Digite o nome de um local"
       :onSearch="handleSearch"
     />
-    <q-infinite-scroll v-if="locations" @load="handleScroll" :offset="250">
+    <q-infinite-scroll
+      v-if="locations"
+      @load="handleScroll"
+      :offset="250"
+      class="q-my-md"
+    >
       <location-item
         v-for="location in locations"
         :key="location.id"
@@ -26,7 +31,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
-import LocationItem from '@/components/LocationItem.vue'
+import LocationItem from "@/components/LocationItem.vue";
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 

@@ -5,7 +5,12 @@
       hint="Digite o nome de um episódio"
       :onSearch="handleSearch"
     />
-    <q-infinite-scroll v-if="episodes" @load="handleScroll" :offset="250">
+    <q-infinite-scroll
+      v-if="episodes"
+      @load="handleScroll"
+      :offset="250"
+      class="q-my-md"
+    >
       <episode-item
         v-for="episode in episodes"
         :key="episode.id"
