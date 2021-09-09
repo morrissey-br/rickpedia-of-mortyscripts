@@ -1,39 +1,46 @@
 <template>
-  <q-page padding v-if="character">
-    <div class="row items-center q-mb-md">
-      <div class="col-auto q-mr-md">
-        <q-avatar size="100px">
-          <q-img :src="character.image" spinner-color="secondary" />
-        </q-avatar>
-      </div>
-      <div class="col">
-        <div class="text-h4">{{ character.name }}</div>
-        <div class="text-subtitle1">
-          {{ character.species }} - {{ character.origin.name }}
+  <q-page padding>
+    <template v-if="character">
+      <div class="row items-center q-mb-md">
+        <div class="col-auto q-mr-md">
+          <q-avatar size="100px">
+            <q-img :src="character.image" spinner-color="secondary" />
+          </q-avatar>
+        </div>
+        <div class="col">
+          <div class="text-h4">{{ character.name }}</div>
+          <div class="text-subtitle1">
+            {{ character.species }} - {{ character.origin.name }}
+          </div>
         </div>
       </div>
-    </div>
-    <q-separator spaced=""></q-separator>
-    <span class="text-h5 vertical-middle q-mr-xs">Status:</span>
-    <dead-or-alive :text="character.status"></dead-or-alive>
-    <q-separator spaced=""></q-separator>
-    <span class="text-h5 vertical-middle q-mb-md">Location:</span>
-    <location-item
-      :id="character.location.id"
-      :name="character.location.name"
-      :type="character.location.type"
-      :dimension="character.location.dimension"
-      :separator="false"
-    />
-    <q-separator spaced></q-separator>
-    <span class="text-h5 q-mb-md">Episodes:</span>
-    <episode-item
-      v-for="episode in character.episode"
-      :key="episode.id"
-      :id="episode.id"
-      :label="episode.name"
-      :caption="episode.episode"
-    />
+      <q-separator spaced=""></q-separator>
+      <span class="text-h5 vertical-middle q-mr-xs">Status:</span>
+      <dead-or-alive :text="character.status"></dead-or-alive>
+      <q-separator spaced=""></q-separator>
+      <span class="text-h5 vertical-middle q-mb-md">Location:</span>
+      <location-item
+        :id="character.location.id"
+        :name="character.location.name"
+        :type="character.location.type"
+        :dimension="character.location.dimension"
+        :separator="false"
+      />
+      <q-separator spaced></q-separator>
+      <span class="text-h5 q-mb-md">Episodes:</span>
+      <episode-item
+        v-for="episode in character.episode"
+        :key="episode.id"
+        :id="episode.id"
+        :label="episode.name"
+        :caption="episode.episode"
+      />
+    </template>
+    <template v-else>
+      <div class="flex justify-center">
+        <q-spinner-dots color="secondary" size="md" />
+      </div>
+    </template>
   </q-page>
 </template>
 

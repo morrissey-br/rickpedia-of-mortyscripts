@@ -1,25 +1,32 @@
 <template>
-  <q-page padding v-if="location">
-    <div class="text-h4">{{ location.name }}</div>
-    <div class="text-subtitle1">
-      {{ location.type }} - {{ location.dimension }}
-    </div>
-    <q-separator spaced></q-separator>
-    <div class="text-h5 q-mb-md">Residents:</div>
-    <q-btn
-      round
-      v-for="resident in location.residents"
-      :key="resident.id"
-      class="q-ma-xs"
-      @click="
-        () => router.push({ name: 'Character', params: { id: resident.id } })
-      "
-    >
-      <q-avatar>
-        <q-img :src="resident.image" spinner-color="secondary" />
-      </q-avatar>
-      <q-tooltip :offset="[0, 5]">{{ resident.name }}</q-tooltip>
-    </q-btn>
+  <q-page padding>
+    <template v-if="location">
+      <div class="text-h4">{{ location.name }}</div>
+      <div class="text-subtitle1">
+        {{ location.type }} - {{ location.dimension }}
+      </div>
+      <q-separator spaced></q-separator>
+      <div class="text-h5 q-mb-md">Residents:</div>
+      <q-btn
+        round
+        v-for="resident in location.residents"
+        :key="resident.id"
+        class="q-ma-xs"
+        @click="
+          () => router.push({ name: 'Character', params: { id: resident.id } })
+        "
+      >
+        <q-avatar>
+          <q-img :src="resident.image" spinner-color="secondary" />
+        </q-avatar>
+        <q-tooltip :offset="[0, 5]">{{ resident.name }}</q-tooltip>
+      </q-btn>
+    </template>
+    <template v-else>
+      <div class="flex justify-center">
+        <q-spinner-dots color="secondary" size="md" />
+      </div>
+    </template>
   </q-page>
 </template>
 

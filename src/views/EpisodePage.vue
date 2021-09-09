@@ -1,22 +1,31 @@
 <template>
-  <q-page padding v-if="episode">
-    <div class="text-h4">{{ episode.name }}</div>
-    <div class="text-subtitle1">{{ episode.episode }}</div>
-    <div>Lauch date: {{ episode.air_date }}</div>
-    <q-separator spaced></q-separator>
-    <div class="text-h5 q-mb-md">Characters:</div>
-    <q-btn
-      round
-      v-for="character in episode.characters"
-      :key="character.id"
-      class="q-ma-xs"
-      @click="() => router.push({name: 'Character', params: {id: character.id}})"
-    >
-      <q-avatar>
-        <q-img :src="character.image" spinner-color="secondary" />
-      </q-avatar>
-      <q-tooltip :offset="[0, 5]">{{character.name}}</q-tooltip>
-    </q-btn>
+  <q-page padding>
+    <template v-if="episode">
+      <div class="text-h4">{{ episode.name }}</div>
+      <div class="text-subtitle1">{{ episode.episode }}</div>
+      <div>Lauch date: {{ episode.air_date }}</div>
+      <q-separator spaced></q-separator>
+      <div class="text-h5 q-mb-md">Characters:</div>
+      <q-btn
+        round
+        v-for="character in episode.characters"
+        :key="character.id"
+        class="q-ma-xs"
+        @click="
+          () => router.push({ name: 'Character', params: { id: character.id } })
+        "
+      >
+        <q-avatar>
+          <q-img :src="character.image" spinner-color="secondary" />
+        </q-avatar>
+        <q-tooltip :offset="[0, 5]">{{ character.name }}</q-tooltip>
+      </q-btn>
+    </template>
+    <template v-else>
+      <div class="flex justify-center">
+        <q-spinner-dots color="secondary" size="md" />
+      </div>
+    </template>
   </q-page>
 </template>
 
@@ -54,8 +63,8 @@ const fetchEpisode = (id: string) => {
 
 export default defineComponent({
   setup() {
-    const router = useRouter()
-    const route = useRoute()
+    const router = useRouter();
+    const route = useRoute();
     const { episode } = fetchEpisode(route.params.id as string);
     return { episode, router };
   },
