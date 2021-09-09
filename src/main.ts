@@ -10,7 +10,7 @@ import { apolloClient } from "./apollo/apollo-config";
 
 createApp({
   setup() {
-    provide(DefaultApolloClient, apolloClient)
+    provide(DefaultApolloClient, apolloClient)    
   },
   render: () => h(App)
 })

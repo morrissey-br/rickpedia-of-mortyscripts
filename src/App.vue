@@ -6,7 +6,7 @@
           <q-avatar>
             <img src="@/assets/logo.png" />
           </q-avatar>
-          Rickpedita of Mortyscripts
+          Rickpedia of Mortyscripts
         </q-toolbar-title>
       </q-toolbar>
       <q-tabs indicator-color="secondary" active-color="secondary">
