@@ -5,6 +5,11 @@
       hint="Digite o nome de um episódio"
       :onSearch="handleSearch"
     />
+    <div class="mask q-my-md" v-if="!episodes">
+      <episode-item-skeleton  />
+      <episode-item-skeleton  />
+      <episode-item-skeleton  />
+    </div>
     <q-infinite-scroll
       v-if="episodes"
       @load="handleScroll"
@@ -32,6 +37,7 @@
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import EpisodeItem from "@/components/EpisodeItem.vue";
+import EpisodeItemSkeleton from "@/components/EpisodeItemSkeleton.vue"
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 
@@ -78,6 +84,7 @@ export default defineComponent({
   components: {
     SearchBar,
     EpisodeItem,
+    EpisodeItemSkeleton
   },
   setup() {
     const { episodes, loadMore, searchEpisode } = fetchEpisodes();
@@ -100,3 +107,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.mask {
+  mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent)
+}
+</style>

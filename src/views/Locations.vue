@@ -5,6 +5,11 @@
       hint="Digite o nome de um local"
       :onSearch="handleSearch"
     />
+    <div class="mask q-my-md" v-if="!locations">
+      <location-item-skeleton  />
+      <location-item-skeleton  />
+      <location-item-skeleton  />
+    </div>
     <q-infinite-scroll
       v-if="locations"
       @load="handleScroll"
@@ -32,6 +37,7 @@
 import { defineComponent } from "vue";
 import SearchBar from "@/components/SearchBar.vue";
 import LocationItem from "@/components/LocationItem.vue";
+import LocationItemSkeleton from "@/components/LocationItemSkeleton.vue"
 import { gql } from "graphql-tag";
 import { useQuery, useResult } from "@vue/apollo-composable";
 
@@ -80,6 +86,7 @@ export default defineComponent({
   components: {
     SearchBar,
     LocationItem,
+    LocationItemSkeleton
   },
   setup() {
     const { locations, loadMore, searchLocation } = fetchLocations();
@@ -102,3 +109,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.mask {
+  mask-image: linear-gradient(rgba(0, 0, 0, 1.0), transparent)
+}
+</style>
+
